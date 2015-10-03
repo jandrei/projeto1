@@ -25,6 +25,8 @@ import engine.Sensor;
 /**
  * 
  * @author jandrei
+ * teste
+ * teste
  *
  */
 public class ServidorTela extends JFrame implements IServidorTela {
