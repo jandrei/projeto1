@@ -35,7 +35,6 @@ public class ServidorTela extends JFrame implements IServidorTela {
 
 			iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(1);
 		}
