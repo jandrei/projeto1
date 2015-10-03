@@ -22,10 +22,11 @@ import com.towel.bind.annotation.Form;
 import comum.IServidor;
 import comum.tipos.Localizacao;
 import comum.tipos.Tipo;
+import engine.Atuador;
 import engine.Sensor;
 
-@Form(Sensor.class)
-public class TelaSensor extends JFrame {
+@Form(Atuador.class)
+public class TelaAtuador extends JFrame {
 
 	@Bindable(field = "nome")
 	private JTextField nome;
@@ -39,21 +40,18 @@ public class TelaSensor extends JFrame {
 	@Bindable(field = "descricao")
 	private JTextField descricao;
 
-	@Bindable(field = "valorLido", formatter = IntFormatter.class)
-	private JTextField valorLido;
-
-	@Bindable(field = "valorAtribuido", formatter = IntFormatter.class)
-	private JTextField valorAtribuido;
+	@Bindable(field = "valorParaAtuar", formatter = IntFormatter.class)
+	private JTextField valorParaAtuar;
 
 	private Binder binder;
 
-	private Sensor sensor;
+	private Atuador atuador;
 	IServidor iot;// = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
 
-	public TelaSensor(Sensor sensor) {
-		super("SensorForm - "+sensor.getNome());
+	public TelaAtuador(Atuador atuador) {
+		super("AtuadorForm - "+atuador.getNome());
 
-		this.sensor = sensor;
+		this.atuador = atuador;
 
 		nome = new JTextField(20);
 		nome.setEditable(false);
@@ -67,10 +65,8 @@ public class TelaSensor extends JFrame {
 		descricao = new JTextField(30);
 		descricao.setEditable(false);
 
-		valorLido = new JTextField(30);
+		valorParaAtuar= new JTextField(30);
 
-		valorAtribuido = new JTextField(30);
-		valorAtribuido.setEditable(false);
 
 		setLayout(new GridLayout(6, 2));
 
@@ -86,11 +82,8 @@ public class TelaSensor extends JFrame {
 		add(new JLabel("Descricao"));// For GridLayout
 		add(descricao);
 
-		add(new JLabel("Valor Lido"));// For GridLayout
-		add(valorLido);
-
-		add(new JLabel("Valor Atribuido"));// For GridLayout
-		add(valorAtribuido);
+		add(new JLabel("Valor Para Atuar"));// For GridLayout
+		add(valorParaAtuar);
 
 		new Thread(new Runnable() {
 
@@ -99,20 +92,13 @@ public class TelaSensor extends JFrame {
 		
 				try {
 					iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
-					iot.registrarSensor(getSensor());
+					iot.registrarAtuador(getAtuador());
 					
 					while (true) {
 						Thread.sleep(3000);
-						binder.updateModel(getSensor());
-						//joga no iot o lido.
-						iot.registrarValorLido(sensor);
-						
-						//pega do iot o setado
-						Integer i = iot.obtemValorAtribuido(getSensor());
-						
-						//seta na tela o valor setado
-						getSensor().setValorAtribuido(i);
-						binder.updateView(getSensor());
+						binder.updateModel(getAtuador());
+
+						iot.atuar(getAtuador());
 					}
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
@@ -125,15 +111,15 @@ public class TelaSensor extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		binder = new AnnotatedBinder(this);
-		binder.updateView(getSensor());
+		binder.updateView(getAtuador());
 	}
 
-	public Sensor getSensor() {
-		return sensor;
+	public Atuador getAtuador() {
+		return atuador;
 	}
 
 	public static void main(String[] args) {
-		new TelaSensor(new Sensor(Tipo.LUZ_ON_OFF, Localizacao.QUARTO, "luz quarto", "aberta(1) ou fechada(0)")).setVisible(true);
+		new TelaAtuador(new Atuador(Tipo.LUZ_ON_OFF, Localizacao.QUARTO, "Luz", "aberta(1) ou fechada(0)")).setVisible(true);
 	}
 
 }
