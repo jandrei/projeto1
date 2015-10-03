@@ -16,8 +16,9 @@ import servidor.Servidor;
 
 import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
-import comum.IServidor;
 
+import comum.IServidor;
+import comum.IServidorTela;
 import engine.Atuador;
 import engine.Sensor;
 

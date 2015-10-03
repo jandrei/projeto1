@@ -7,11 +7,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tela.servidor.IServidorTela;
 import comum.IServidor;
-import comum.SensorAtuadorComum;
+import comum.IServidorTela;
 import engine.Atuador;
 import engine.Sensor;
+import engine.SensorAtuadorComum;
 
 public class Servidor extends UnicastRemoteObject implements IServidor {
 	private static final long serialVersionUID = -656243459860317218L;

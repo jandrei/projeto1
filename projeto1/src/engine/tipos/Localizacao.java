@@ -1,4 +1,4 @@
-package comum.tipos;
+package engine.tipos;
 
 public enum Localizacao {
 

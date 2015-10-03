@@ -5,10 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import comum.IServidor;
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
 import engine.Atuador;
 import engine.Sensor;
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

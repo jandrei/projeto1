@@ -20,10 +20,10 @@ import com.towel.bind.annotation.Bindable;
 import com.towel.bind.annotation.Form;
 
 import comum.IServidor;
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
 import engine.Atuador;
 import engine.Sensor;
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 @Form(Atuador.class)
 public class TelaAtuador extends JFrame {

@@ -1,7 +1,8 @@
 package tela.servidor.formatter;
 
 import com.towel.bean.Formatter;
-import comum.tipos.Localizacao;
+
+import engine.tipos.Localizacao;
 
 public class LocalizacaoFormatter implements Formatter {
 	public Object format(Object obj) {

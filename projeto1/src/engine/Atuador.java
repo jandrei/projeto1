@@ -2,9 +2,8 @@ package engine;
 
 import com.towel.el.annotation.Resolvable;
 
-import comum.SensorAtuadorComum;
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 public class Atuador extends SensorAtuadorComum {
 	private static final long serialVersionUID = -1670262637425297242L;

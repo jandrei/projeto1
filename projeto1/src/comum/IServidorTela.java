@@ -1,4 +1,4 @@
-package tela.servidor;
+package comum;
 
 public interface IServidorTela {
 	public void atualizaTela();

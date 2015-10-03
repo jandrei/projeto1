@@ -8,10 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import comum.IServidor;
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
 import engine.Atuador;
 import engine.Sensor;
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 public class TesteServidor {
 

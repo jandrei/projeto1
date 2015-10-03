@@ -1,9 +1,9 @@
 package engine;
 
 import com.towel.el.annotation.Resolvable;
-import comum.SensorAtuadorComum;
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
+
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 public class Sensor extends SensorAtuadorComum {
 

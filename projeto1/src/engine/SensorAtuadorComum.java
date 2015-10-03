@@ -1,11 +1,11 @@
-package comum;
+package engine;
 
 import java.io.Serializable;
 
 import com.towel.el.annotation.Resolvable;
 
-import comum.tipos.Localizacao;
-import comum.tipos.Tipo;
+import engine.tipos.Localizacao;
+import engine.tipos.Tipo;
 
 public class SensorAtuadorComum implements Serializable {
 

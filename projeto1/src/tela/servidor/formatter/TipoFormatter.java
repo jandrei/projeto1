@@ -1,7 +1,8 @@
 package tela.servidor.formatter;
 
 import com.towel.bean.Formatter;
-import comum.tipos.Tipo;
+
+import engine.tipos.Tipo;
 
 public class TipoFormatter implements Formatter {
 	public Object format(Object obj) {
