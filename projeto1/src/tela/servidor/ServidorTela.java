@@ -88,16 +88,16 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			AnnotationResolver resolver = new AnnotationResolver(Atuador.class);
 			ObjectTableModel<Atuador> tableModel = new ObjectTableModel<Atuador>(resolver, "nome,tipo,localizacao,valorParaAtuar");
 			tableModel.setData(atuadores);
-			tableModel.setColEditable(3, true);
+			//tableModel.setColEditable(3, true);
 			tabelaAtuadores.getTableHeader().setReorderingAllowed(false);
 			tabelaAtuadores.setModel(tableModel);
 			
 			
 			AnnotationResolver resolver2 = new AnnotationResolver(Sensor.class);
-			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2, "nome,tipo,localizacao,valorLido,valorAtribuido,limite");
+			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2, "nome,tipo,localizacao,valorLido,valorAtribuido");
 			tableModel2.setData(sensores);
-			tableModel2.setColEditable(3, true);
-			tableModel2.setColEditable(5, true);
+			//tableModel2.setColEditable(3, true);
+			//tableModel2.setColEditable(5, true);
 			tabelaSensores.getTableHeader().setReorderingAllowed(false);
 			tabelaSensores.setModel(tableModel2);
 			
