@@ -81,6 +81,7 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 		tela.atualizaTela();
 	}
 
+	
 	public void atuar(Atuador atuador) throws RemoteException {
 		int index = atuadores.indexOf(atuador);
 		if (index >=0){
