@@ -22,6 +22,11 @@ import comum.IServidorTela;
 import engine.Atuador;
 import engine.Sensor;
 
+/**
+ * 
+ * @author jandrei
+ *
+ */
 public class ServidorTela extends JFrame implements IServidorTela {
 
 	private static final long serialVersionUID = -9061563475864746331L;
