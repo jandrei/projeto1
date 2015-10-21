@@ -7,6 +7,7 @@ Tecnólogo em Análise e Desenvolvimento de Sistemas
 Sistemas Distribuídos
 Prof. Luis Henrique Ries
 Especificação do Trabalho I – Comunicação
+
 Este trabalho tem como objetivo realizar um sistema distribuído utilizando os conceitos
 de comunicação e modelos para sistemas distribuídos. Para isso, uma aplicação
 distribuída chamada MyHomeTop deve ser desenvolvida e documentada de maneira
