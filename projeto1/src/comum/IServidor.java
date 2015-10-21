@@ -58,5 +58,8 @@ public interface IServidor extends Remote {
 	public List<Atuador> getAtuadores() throws RemoteException;
 
 	public List<Sensor> getSensores() throws RemoteException;
+	
+	public Atuador obtemAtuador(Atuador atuador) throws RemoteException;
+	
 
 }

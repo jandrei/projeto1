@@ -34,7 +34,7 @@ public class Cliente {
 			
 			//registra valor inicial
 //			sensor.setValorLido(0);
-//		iot.registrarValorLido(sensor);
+//                      iot.registrarValorLido(sensor);
 			
 			//altera valor inicial
 			//sensor.setValorLido(1);

@@ -12,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
-import servidor.Servidor;
 
 import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
@@ -94,18 +93,29 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			
 			
 			AnnotationResolver resolver = new AnnotationResolver(Atuador.class);
-			ObjectTableModel<Atuador> tableModel = new ObjectTableModel<Atuador>(resolver, "nome,tipo,localizacao,valorParaAtuar");
+			ObjectTableModel<Atuador> tableModel = new ObjectTableModel<Atuador>(resolver, "nome,tipo,localizacao,valorParaAtuar"){
+				@Override
+				public void setValueAt(Object value, int row, int col) {
+					super.setValueAt(value, row, col);
+					if (col ==3){
+						Atuador at = atuadores.get(row);
+						try{
+							iot.atuar(at);
+						}catch(Exception e){
+							System.err.println(e.getMessage());
+						}
+					}
+				}
+			};
 			tableModel.setData(atuadores);
-			//tableModel.setColEditable(3, true);
+			tableModel.setColEditable(3, true);
 			tabelaAtuadores.getTableHeader().setReorderingAllowed(false);
 			tabelaAtuadores.setModel(tableModel);
 			
 			
 			AnnotationResolver resolver2 = new AnnotationResolver(Sensor.class);
-			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2, "nome,tipo,localizacao,valorLido,valorAtribuido");
+			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2, "nome,tipo,localizacao,valorLido");
 			tableModel2.setData(sensores);
-			//tableModel2.setColEditable(3, true);
-			//tableModel2.setColEditable(5, true);
 			tabelaSensores.getTableHeader().setReorderingAllowed(false);
 			tabelaSensores.setModel(tableModel2);
 			
