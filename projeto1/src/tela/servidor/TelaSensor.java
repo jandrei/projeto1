@@ -17,6 +17,7 @@ import com.towel.bind.annotation.Bindable;
 import com.towel.bind.annotation.Form;
 
 import comum.IServidor;
+import engine.Constantes;
 import engine.Localizacao;
 import engine.Sensor;
 import engine.Tipo;
@@ -26,6 +27,10 @@ import formatter.TipoFormatter;
 
 @Form(Sensor.class)
 public class TelaSensor extends JFrame implements ActionListener {
+
+	private String namingLookupServer = null;
+
+	private JTextField tfEnderecoServidor;
 
 	@Bindable(field = "nome")
 	private JTextField nome;
@@ -47,10 +52,13 @@ public class TelaSensor extends JFrame implements ActionListener {
 	private Sensor sensor;
 	IServidor iot;// = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
 
-	public TelaSensor(final Sensor sensor) {
+	public TelaSensor(final Sensor sensor, String namingLookupServer) {
 		super("SensorForm - " + sensor.getNome());
-
+		this.namingLookupServer = namingLookupServer;
 		this.sensor = sensor;
+
+		tfEnderecoServidor = new JTextField(20);
+		tfEnderecoServidor.setText(this.namingLookupServer);
 
 		nome = new JTextField(20);
 
@@ -61,12 +69,14 @@ public class TelaSensor extends JFrame implements ActionListener {
 		descricao = new JTextField(30);
 
 		valorLido = new JTextField(30);
-		
+
 		btRegistrar = new JButton("Registrar Sensor");
 		getRootPane().setDefaultButton(btRegistrar);
-		
 
-		setLayout(new GridLayout(6, 2));
+		setLayout(new GridLayout(7, 2));
+
+		add(new JLabel("Endereço do servidor:"));
+		add(tfEnderecoServidor);
 
 		add(new JLabel("Nome:"));
 		add(nome);
@@ -82,7 +92,7 @@ public class TelaSensor extends JFrame implements ActionListener {
 
 		add(new JLabel("Valor Lido"));// For GridLayout
 		add(valorLido);
-		
+
 		add(new JLabel(""));
 		add(btRegistrar);
 		btRegistrar.addActionListener(this);
@@ -91,7 +101,7 @@ public class TelaSensor extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		
+
 		binder = new AnnotatedBinder(this);
 		binder.updateView(getSensor());
 	}
@@ -101,21 +111,24 @@ public class TelaSensor extends JFrame implements ActionListener {
 		try {
 			getSensor().setNome(nome.getText());
 			getSensor().setDescricao(descricao.getText());
-			getSensor().setLocalizacao((Localizacao)cbLocalizacao.getSelectedItem());
-			getSensor().setTipo((Tipo)cbTipo.getSelectedItem());
+			getSensor().setLocalizacao((Localizacao) cbLocalizacao.getSelectedItem());
+			getSensor().setTipo((Tipo) cbTipo.getSelectedItem());
 			getSensor().setValorLido(valorLido.getText());
-			
-			iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
+
+			this.namingLookupServer = tfEnderecoServidor.getText();
+
+			iot = (IServidor) Naming.lookup(this.namingLookupServer);
 			iot.registrarSensor(getSensor());
-			
+
 			startMonitoring();
-			
+
+			tfEnderecoServidor.setEditable(false);
 			nome.setEditable(false);
 			descricao.setEditable(false);
 			cbLocalizacao.setEnabled(false);
 			cbTipo.setEnabled(false);
 			btRegistrar.setEnabled(false);
-			
+
 		} catch (Exception ex) {
 			Mensagem.erro(this, ex.getMessage());
 		}
@@ -131,9 +144,9 @@ public class TelaSensor extends JFrame implements ActionListener {
 				try {
 					while (true) {
 						Thread.sleep(3000);
-						
+
 						getSensor().setValorLido(valorLido.getText());
-						
+
 						iot.registrarValorLido(getSensor());
 					}
 				} catch (Exception e) {
@@ -149,8 +162,7 @@ public class TelaSensor extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new TelaSensor(new Sensor(Tipo.PORTA, Localizacao.QUARTO, "portao", "aberta(1) ou fechada(0)"))
-				.setVisible(true);
+		new TelaSensor(new Sensor(Tipo.PORTA, Localizacao.QUARTO, "portao", "aberta(1) ou fechada(0)"),Constantes.getNamingLokupServer()).setVisible(true);
 	}
 
 }

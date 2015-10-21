@@ -18,6 +18,7 @@ import com.towel.bind.annotation.Form;
 
 import comum.IServidor;
 import engine.Atuador;
+import engine.Constantes;
 import engine.Localizacao;
 import engine.Tipo;
 import formatter.LocalizacaoFormatter;
@@ -25,6 +26,10 @@ import formatter.TipoFormatter;
 
 @Form(Atuador.class)
 public class TelaAtuador extends JFrame implements ActionListener {
+	
+	private String namingLookupServer = null;
+	
+	private JTextField tfEnderecoServidor;
 
 	@Bindable(field = "nome")
 	private JTextField nome;
@@ -50,13 +55,17 @@ public class TelaAtuador extends JFrame implements ActionListener {
 	private Binder binder;
 
 	private Atuador atuador;
-	IServidor iot;// = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
+	IServidor iot;
 
-	public TelaAtuador(Atuador atuador) {
+	public TelaAtuador(Atuador atuador,String namingLookupServer) {
 		super("AtuadorForm - " + atuador.getNome());
+		this.namingLookupServer = namingLookupServer;
 
 		this.atuador = atuador;
 
+		tfEnderecoServidor = new JTextField(20);
+		tfEnderecoServidor.setText(this.namingLookupServer);
+		
 		nome = new JTextField(20);
 		// nome.setEditable(false);
 
@@ -81,6 +90,9 @@ public class TelaAtuador extends JFrame implements ActionListener {
 		
 		setLayout(new GridLayout(7, 2));
 
+		add(new JLabel("Endereço do servidor:"));
+		add(tfEnderecoServidor);
+		
 		add(new JLabel("Nome:"));
 		add(nome);
 
@@ -127,11 +139,14 @@ public class TelaAtuador extends JFrame implements ActionListener {
 			getAtuador().setTipo((Tipo) cbTipo.getSelectedItem());
 
 			System.out.println("Registrando = " + getAtuador());
-			iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
+			this.namingLookupServer = tfEnderecoServidor.getText();
+			
+			iot = (IServidor) Naming.lookup(this.namingLookupServer);
 			iot.registrarAtuador(getAtuador());
 			
 			startMonitorValores();
 
+			this.tfEnderecoServidor.setEditable(false);;
 			this.nome.setEditable(false);;
 			this.tipo.setEditable(false);;
 			this.localizacao.setEditable(false);;
@@ -173,7 +188,7 @@ public class TelaAtuador extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new TelaAtuador(new Atuador(Tipo.LUZ_ON_OFF, Localizacao.SALA, "Luz", "Insira uma descrição aqui."))
+		new TelaAtuador(new Atuador(Tipo.LUZ_ON_OFF, Localizacao.SALA, "Luz", "Insira uma descrição aqui."),Constantes.getNamingLokupServer())
 				.setVisible(true);
 	}
 

@@ -107,11 +107,12 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 			}
 		}).startServer();
 	}
+	
 
 	public void startServer() throws Exception {
 		IServidor server = new Servidor(tela);
-		LocateRegistry.createRegistry(1099);
-		Naming.rebind("iot", server);
+		LocateRegistry.createRegistry(Constantes.portaServidor);
+		Naming.rebind(Constantes.nomeServidor, server);
 	}
 
 	public List<Atuador> getAtuadores() {
