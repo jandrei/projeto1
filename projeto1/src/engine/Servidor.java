@@ -1,4 +1,4 @@
-package tela.servidor;
+package engine;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -9,9 +9,6 @@ import java.util.List;
 
 import comum.IServidor;
 import comum.IServidorTela;
-import engine.Atuador;
-import engine.Sensor;
-import engine.SensorAtuadorComum;
 
 public class Servidor extends UnicastRemoteObject implements IServidor {
 	private static final long serialVersionUID = -656243459860317218L;
@@ -30,40 +27,32 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 
 	@Override
 	public void registrarSensor(Sensor sensor) throws RemoteException {
+		sensor.check();
 		validaSeJaRegistrado(sensores, sensor);
 		sensores.add(sensor);
 		System.out.println("Registrando = " + sensor);
-		tela.atualizaTela();
+		tela.atualizaSensores();
 	}
 
 	@Override
 	public void registrarAtuador(Atuador atuador) throws RemoteException {
+		atuador.check();
 		validaSeJaRegistrado(atuadores, atuador);
 		atuadores.add(atuador);
 		System.out.println("Registrando = " + atuador);
-		tela.atualizaTela();
+		tela.atualizaAtuadores();
 	}
 
-	@Override
-	public Integer obtemValorAtribuido(Sensor sensor) throws RemoteException {
-		int posicao = sensores.indexOf(sensor);
-		if (posicao < 0) {
-			throw new RemoteException("Sensor não encontrado para obter o valor atribuido por algo ou alguém");
-		}
-		Sensor alterado = sensores.get(posicao);
-		Integer valorAtribuido = alterado.getValorAtribuido();
-		System.out.println("obtemValorAtribuido = " + valorAtribuido);
-		return valorAtribuido;
-	}
+	
 	
 	@Override
-	public Integer obtemValorLido(Sensor sensor) throws RemoteException {
+	public String obtemValorLido(Sensor sensor) throws RemoteException {
 		int posicao = sensores.indexOf(sensor);
 		if (posicao < 0) {
 			throw new RemoteException("Sensor não encontrado para obter o valor atribuido por algo ou alguém");
 		}
 		Sensor alterado = sensores.get(posicao);
-		Integer valor = alterado.getValorLido();
+		String valor = alterado.getValorLido();
 		System.out.println("obtemValorLido= " + valor);
 		return valor;
 	}
@@ -78,7 +67,7 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 		Sensor alterado = sensores.get(posicao);
 		alterado.setValorLido(sensor.getValorLido());
 		System.out.println("registraValorLido = " + sensor.getValorLido());
-		tela.atualizaTela();
+		tela.atualizaSensores();
 	}
 
 	public Atuador obtemAtuador(Atuador atuador){
@@ -96,7 +85,6 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 		}else{
 			System.out.println("Atuador "+atuador.getNome()+" não foi encontrado ");
 		}
-		tela.atualizaTela();
 	}
 
 	private void validaSeJaRegistrado(List lista, SensorAtuadorComum obj) throws RemoteException {
@@ -105,12 +93,17 @@ public class Servidor extends UnicastRemoteObject implements IServidor {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void mainasd(String[] args) throws Exception {
 		new Servidor(new IServidorTela() {
 
 			@Override
-			public void atualizaTela() {
-				System.out.println("atualizaTela");
+			public void atualizaAtuadores() {
+				System.out.println("atualizaAtuadores");
+			}
+			@Override
+			public void atualizaSensores() {
+				System.out.println("Atualiza sensores");
+				
 			}
 		}).startServer();
 	}

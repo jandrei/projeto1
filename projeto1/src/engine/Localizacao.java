@@ -1,4 +1,4 @@
-package engine.tipos;
+package engine;
 
 public enum Localizacao {
 

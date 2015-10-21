@@ -36,16 +36,7 @@ public interface IServidor extends Remote {
 	 */
 	public void registrarValorLido(Sensor sensor) throws RemoteException;
 
-	/**
-	 * algum atuador pode querer gravar algo para mudar o estado do sensor,
-	 * então deverá utilizar este método
-	 * 
-	 * @param sensor
-	 * @throws RemoteException
-	 */
-	public Integer obtemValorAtribuido(Sensor sensor) throws RemoteException;
-	
-	public Integer obtemValorLido(Sensor sensor) throws RemoteException;
+	public String obtemValorLido(Sensor sensor) throws RemoteException;
 	/**
 	 * deve receber o atuador com o valor que ele deseja setar em sensores de
 	 * mesmo tipo e localização.

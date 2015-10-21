@@ -2,9 +2,6 @@ package engine;
 
 import com.towel.el.annotation.Resolvable;
 
-import engine.tipos.Localizacao;
-import engine.tipos.Tipo;
-
 public class Sensor extends SensorAtuadorComum {
 
 	/**
@@ -17,30 +14,15 @@ public class Sensor extends SensorAtuadorComum {
 	}
 
 	@Resolvable(colName = "Valor Lido")
-	private Integer valorLido;
+	private String valorLido;
 
-	@Resolvable(colName = "Valor Atribuido")
-	private Integer valorAtribuido;
-	
-	
-	
-
-	public Integer getValorLido() {
+	public String getValorLido() {
 		return valorLido;
 	}
 
-	public void setValorLido(Integer valorLido) {
-		
+	public void setValorLido(String valorLido) {
+
 		this.valorLido = valorLido;
-	}
-
-	public Integer getValorAtribuido() {
-		return valorAtribuido;
-	}
-
-	public void setValorAtribuido(Integer valorAtribuido) {
-		
-		this.valorAtribuido = valorAtribuido;
 	}
 
 }

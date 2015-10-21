@@ -2,7 +2,7 @@ package formatter;
 
 import com.towel.bean.Formatter;
 
-import engine.tipos.Tipo;
+import engine.Tipo;
 
 public class TipoFormatter implements Formatter {
 	public Object format(Object obj) {

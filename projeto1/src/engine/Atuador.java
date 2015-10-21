@@ -2,25 +2,21 @@ package engine;
 
 import com.towel.el.annotation.Resolvable;
 
-import engine.tipos.Localizacao;
-import engine.tipos.Tipo;
-
 public class Atuador extends SensorAtuadorComum {
 	private static final long serialVersionUID = -1670262637425297242L;
 
 	@Resolvable(colName="Valor para Atuar")
-	private Integer valorParaAtuar;
+	private String valorParaAtuar;
 
 	public Atuador(Tipo tipo, Localizacao localizacao, String nome, String descricao) {
 		super(tipo, localizacao, nome, descricao);
 	}
 
-
-	public Integer getValorParaAtuar() {
+	public String getValorParaAtuar() {
 		return valorParaAtuar;
 	}
 
-	public void setValorParaAtuar(Integer valorParaAtuar) {
+	public void setValorParaAtuar(String valorParaAtuar) {
 		this.valorParaAtuar = valorParaAtuar;
 	}
 }

@@ -2,7 +2,7 @@ package formatter;
 
 import com.towel.bean.Formatter;
 
-import engine.tipos.Localizacao;
+import engine.Localizacao;
 
 public class LocalizacaoFormatter implements Formatter {
 	public Object format(Object obj) {

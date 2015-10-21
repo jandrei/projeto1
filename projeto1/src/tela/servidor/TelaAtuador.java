@@ -15,145 +15,166 @@ import com.towel.bind.Binder;
 import com.towel.bind.annotation.AnnotatedBinder;
 import com.towel.bind.annotation.Bindable;
 import com.towel.bind.annotation.Form;
-import comum.IServidor;
 
+import comum.IServidor;
 import engine.Atuador;
-import engine.tipos.Localizacao;
-import engine.tipos.Tipo;
+import engine.Localizacao;
+import engine.Tipo;
 import formatter.LocalizacaoFormatter;
 import formatter.TipoFormatter;
 
 @Form(Atuador.class)
 public class TelaAtuador extends JFrame implements ActionListener {
 
-    @Bindable(field = "nome")
-    private JTextField nome;
+	@Bindable(field = "nome")
+	private JTextField nome;
 
-    @Bindable(field = "tipo", formatter = TipoFormatter.class)
-    private JTextField tipo;
+	@Bindable(field = "tipo", formatter = TipoFormatter.class)
+	private JTextField tipo;
 
-    @Bindable(field = "localizacao", formatter = LocalizacaoFormatter.class)
-    private JTextField localizacao;
+	@Bindable(field = "localizacao", formatter = LocalizacaoFormatter.class)
+	private JTextField localizacao;
 
-    @Bindable(field = "descricao")
-    private JTextField descricao;
+	@Bindable(field = "descricao")
+	private JTextField descricao;
 
-    @Bindable(field = "valorParaAtuar")
-    private JTextField valorParaAtuar;
+	@Bindable(field = "valorParaAtuar")
+	private JTextField valorParaAtuar;
 
-    @Bindable(field = "localizacao")
-    private JComboBox cbLocalizacao;
+	private JComboBox cbLocalizacao;
 
-    @Bindable(field = "tipo", formatter = TipoFormatter.class)
-    private JComboBox cbTipo;
-    private JButton btRegistrar;
+	private JComboBox cbTipo;
 
-    private Binder binder;
+	private JButton btRegistrar;
 
-    private Atuador atuador;
-    IServidor iot;// = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
+	private Binder binder;
 
-    public TelaAtuador(Atuador atuador) {
-        super("AtuadorForm - " + atuador.getNome());
+	private Atuador atuador;
+	IServidor iot;// = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
 
-        this.atuador = atuador;
+	public TelaAtuador(Atuador atuador) {
+		super("AtuadorForm - " + atuador.getNome());
 
-        nome = new JTextField(20);
-        //nome.setEditable(false);
+		this.atuador = atuador;
 
-        tipo = new JTextField(20);
-        //tipo.setEditable(false);
+		nome = new JTextField(20);
+		// nome.setEditable(false);
 
-        localizacao = new JTextField(30);
-        //localizacao.setEditable(false);
+		tipo = new JTextField(20);
+		// tipo.setEditable(false);
 
-        descricao = new JTextField(30);
-        //descricao.setEditable(false);
+		localizacao = new JTextField(30);
+		// localizacao.setEditable(false);
 
-        valorParaAtuar = new JTextField(30);
-        valorParaAtuar.setEditable(false);
+		descricao = new JTextField(30);
+		// descricao.setEditable(false);
 
-        cbLocalizacao = new JComboBox(Localizacao.values());
-        cbTipo = new JComboBox(Tipo.values());
+		valorParaAtuar = new JTextField(30);
+		valorParaAtuar.setEditable(false);
 
-        btRegistrar = new JButton("Registrar Atuador");
+		cbLocalizacao = new JComboBox(Localizacao.values());
 
-        setLayout(new GridLayout(7, 2));
+		cbTipo = new JComboBox(Tipo.values());
 
-        add(new JLabel("Nome:"));
-        add(nome);
+		btRegistrar = new JButton("Registrar Atuador");
+		getRootPane().setDefaultButton(btRegistrar);
+		
+		setLayout(new GridLayout(7, 2));
 
-        add(new JLabel("Tipo:"));
-        //add(tipo);
-        add(cbTipo);
+		add(new JLabel("Nome:"));
+		add(nome);
 
-        //add(new JLabel("Localizacao"));// For GridLayout
-        //add(localizacao);
-        add(new JLabel("Localizacao"));// For GridLayout
-        add(cbLocalizacao);
+		add(new JLabel("Tipo:"));
+		// add(tipo);
+		add(cbTipo);
 
-        add(new JLabel("Descricao"));// For GridLayout
-        add(descricao);
+		// add(new JLabel("Localizacao"));// For GridLayout
+		// add(localizacao);
+		add(new JLabel("Localizacao"));// For GridLayout
+		add(cbLocalizacao);
 
-        add(new JLabel("Valor Para Atuar"));// For GridLayout
-        add(valorParaAtuar);
-        
-        add(new JLabel(""));
-        add(btRegistrar);
-        btRegistrar.addActionListener(this);
+		add(new JLabel("Descricao"));// For GridLayout
+		add(descricao);
 
-        new Thread(new Runnable() {
+		add(new JLabel("Valor Para Atuar"));// For GridLayout
+		add(valorParaAtuar);
 
-            @Override
-            public void run() {
+		add(new JLabel(""));
+		add(btRegistrar);
+		btRegistrar.addActionListener(this);
 
-                try {
-                    iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
-                    iot.registrarAtuador(getAtuador());
+		pack();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		binder = new AnnotatedBinder(this);
+		binder.updateView(getAtuador());
 
-                    while (true) {
-                        Thread.sleep(3000);
-                        Atuador at = iot.obtemAtuador(getAtuador());
-                        if (at != null) {
-                            binder.updateView(at);
-                        } else {
-                            //System.exit(0);
-                        }
-                    }
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                    //System.exit(1);
-                }
-            }
-        }).start();
+		cbLocalizacao.setSelectedItem(getAtuador().getLocalizacao());
+		cbTipo.setSelectedItem(getAtuador().getTipo());
+	}
 
-        pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        binder = new AnnotatedBinder(this);
-        binder.updateView(getAtuador());
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		binder.updateModel(getAtuador());
+		
+		if (nome.getText().isEmpty()) {
+			Mensagem.erro(this, "Informe o nome, campo obrigatório.");
+			return;
+		}
+		try {
+			getAtuador().setLocalizacao((Localizacao) cbLocalizacao.getSelectedItem());
+			getAtuador().setTipo((Tipo) cbTipo.getSelectedItem());
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (nome.getText().isEmpty()) {
-            Mensagem.erro(this, "Informe o nome, campo obrigatório.");
-            return;
-        }
-        try {
-            System.out.println(getAtuador());
-            //iot.registrarAtuador(getAtuador());
-        } catch (Exception erro) {
-            erro.printStackTrace();
-        }
-    }
+			System.out.println("Registrando = " + getAtuador());
+			iot = (IServidor) Naming.lookup("rmi://localhost:1099/iot");
+			iot.registrarAtuador(getAtuador());
+			
+			startMonitorValores();
 
-    public Atuador getAtuador() {
-        return atuador;
-    }
+			this.nome.setEditable(false);;
+			this.tipo.setEditable(false);;
+			this.localizacao.setEditable(false);;
+			this.descricao.setEditable(false);;
+			this.valorParaAtuar.setEditable(false);;
+			this.cbLocalizacao.setEnabled(false);;
+			this.cbTipo.setEnabled(false);;
+			this.btRegistrar.setEnabled(false);;
+			
+		} catch (Exception erro) {
+			Mensagem.erro(this, erro.getMessage());
+		}
+	}
+	
+	private void startMonitorValores(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						Thread.sleep(3000);
+						Atuador at = iot.obtemAtuador(getAtuador());
+						if (at != null) {
+							valorParaAtuar.setText(at.getValorParaAtuar()+"");
+						} else {
+							// System.exit(0);
+						}
+					}
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					// System.exit(1);
+				}
+			}
+		}).start();
+	}
 
-    public static void main(String[] args) {
-        new TelaAtuador(new Atuador(Tipo.LUZ_ON_OFF, Localizacao.SALA, "Luz", "aberta(1) ou fechada(0)")).setVisible(true);
-    }
+	public Atuador getAtuador() {
+		return atuador;
+	}
+
+	public static void main(String[] args) {
+		new TelaAtuador(new Atuador(Tipo.LUZ_ON_OFF, Localizacao.SALA, "Luz", "Insira uma descrição aqui."))
+				.setVisible(true);
+	}
 
 }

@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import com.towel.el.annotation.Resolvable;
 
-import engine.tipos.Localizacao;
-import engine.tipos.Tipo;
-
 public class SensorAtuadorComum implements Serializable {
 
 	private static final long serialVersionUID = 7912615432692540656L;
@@ -29,11 +26,10 @@ public class SensorAtuadorComum implements Serializable {
 		this.localizacao = localizacao;
 		this.nome = nome;
 		this.descricao = descricao;
-		check();
 	}
 
-	private void check() {
-		if (this.tipo == null || this.localizacao == null || this.nome == null || this.descricao == null) {
+	public void check() {
+		if (this.tipo == null || this.localizacao == null || this.nome == null || this.descricao == null ||this.nome.isEmpty() || this.descricao.isEmpty()) {
 			throw new RuntimeException("Todos os campos são obrigatórios.");
 		}
 	}

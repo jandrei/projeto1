@@ -1,6 +1,7 @@
 package comum;
 
 public interface IServidorTela {
-	public void atualizaTela();
+	public void atualizaAtuadores();
+	public void atualizaSensores();
 
 }
