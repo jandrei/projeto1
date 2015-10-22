@@ -52,9 +52,7 @@ public class ServidorTela extends JFrame implements IServidorTela {
 	}
 
 	public void startServer() {
-
 		try {
-
 			Servidor server = new Servidor(this);
 			server.startServer();
 
