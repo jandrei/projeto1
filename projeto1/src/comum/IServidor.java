@@ -7,6 +7,10 @@ import java.util.List;
 import engine.Atuador;
 import engine.Sensor;
 
+/**
+ *Interface com os metodos que serão visiveis pelos sensores e atuadores para interagir com o servidor 
+ *
+ */
 public interface IServidor extends Remote {
 	/**
 	 * serve para registrar {@link Sensor} no servidor de monitoramento

@@ -2,6 +2,11 @@ package engine;
 
 import com.towel.el.annotation.Resolvable;
 
+/**
+ *
+ * Classe com atributos específicos da classe sensor.
+ *
+ */
 public class Sensor extends SensorAtuadorComum {
 
 	/**

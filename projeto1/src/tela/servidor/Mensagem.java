@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author 631410132
+ * Facilita imprimir mensagens para o usuário
  */
 public class Mensagem {
 

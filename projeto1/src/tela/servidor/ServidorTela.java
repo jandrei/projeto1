@@ -38,7 +38,8 @@ import engine.Tipo;
 
 /**
  * 
- * @author jandrei teste teste
+ * Tela que monitora as informações que são enviadas aos atuadores e recebidas
+ * dos sensores
  *
  */
 public class ServidorTela extends JFrame implements IServidorTela {
@@ -51,6 +52,9 @@ public class ServidorTela extends JFrame implements IServidorTela {
 		initComponents();
 	}
 
+	/**
+	 * inicia o servidor
+	 */
 	public void startServer() {
 		try {
 			Servidor server = new Servidor(this);
@@ -72,8 +76,7 @@ public class ServidorTela extends JFrame implements IServidorTela {
 		scrollPaneAtuadores = new JScrollPane();
 		scrollPaneSensores = new JScrollPane();
 		menubar = new JMenuBar();
-		
-		
+
 		this.setJMenuBar(menubar);
 
 		JMenu arquivo = new JMenu("Arquivo");
@@ -92,7 +95,11 @@ public class ServidorTela extends JFrame implements IServidorTela {
 				try {
 					if (!iniciouSensorOuAtuador) {
 						String porta = JOptionPane.showInputDialog("Informe a porta de operação do servidor:");
-						Constantes.portaServidor = Integer.parseInt(porta);
+						if (porta != null && !porta.isEmpty()) {
+							Constantes.portaServidor = Integer.parseInt(porta.isEmpty() ? "0" : porta);
+						} else {
+							Mensagem.aviso(null, "Porta não foi alterada");
+						}
 					} else {
 						Mensagem.aviso(null, "O servidor já foi iniciado, não será possível alterar essa informação.");
 					}
@@ -110,9 +117,13 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (!iniciouSensorOuAtuador) {
-						String nome = JOptionPane.showInputDialog(
-								"Informe o nome do servidor, apenas texto e sem caracteres especiais e sem espaços:");
-						Constantes.nomeServidor = nome;
+						String nome = JOptionPane.showInputDialog("Informe o nome do servidor, apenas texto e sem caracteres especiais e sem espaços:");
+						if (nome !=null && !nome.isEmpty()) {
+							Constantes.nomeServidor = nome;
+						} else {
+							Mensagem.aviso(null, "Nome não foi alterado");
+						}
+
 					} else {
 						Mensagem.aviso(null, "O servidor já foi iniciado, não será possível alterar essa informação.");
 					}
@@ -149,17 +160,16 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				iniciouSensorOuAtuador = true;
-				new TelaAtuador(new Atuador(Tipo.JANELA, Localizacao.BANHEIRO, "", ""),
-						Constantes.getNamingLokupServer()).setVisible(true);
+				new TelaAtuador(new Atuador(Tipo.JANELA, Localizacao.BANHEIRO, "", ""), Constantes.getNamingLokupServer()).setVisible(true);
 			}
 		});
+
 		menuNovoSensor.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				iniciouSensorOuAtuador = true;
-				new TelaSensor(new Sensor(Tipo.JANELA, Localizacao.BANHEIRO, "", ""), Constantes.getNamingLokupServer())
-						.setVisible(true);
+				new TelaSensor(new Sensor(Tipo.JANELA, Localizacao.BANHEIRO, "", ""), Constantes.getNamingLokupServer()).setVisible(true);
 			}
 		});
 
@@ -192,7 +202,7 @@ public class ServidorTela extends JFrame implements IServidorTela {
 		this.setLayout(new BorderLayout());
 		this.add(paSup, BorderLayout.NORTH);
 		this.add(paCenter, BorderLayout.CENTER);
-		
+
 		status = new JLabel("Servidor não iniciado(Inicie no menu Arquivo->Start Servidor)");
 		StatusBar statusBar = new StatusBar();
 		statusBar.add(status);
@@ -202,13 +212,16 @@ public class ServidorTela extends JFrame implements IServidorTela {
 		pack();
 	}
 
+	/**
+	 * metodo chamado pelo servidor quando uma alteração é feita nas listas de
+	 * informações
+	 */
 	@Override
 	public void atualizaSensores() {
 		try {
 			this.sensores = this.iot.getSensores();
 			AnnotationResolver resolver2 = new AnnotationResolver(Sensor.class);
-			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2,
-					"nome,tipo,localizacao,valorLido");
+			ObjectTableModel<Sensor> tableModel2 = new ObjectTableModel<Sensor>(resolver2, "nome,tipo,localizacao,valorLido");
 			tableModel2.setData(sensores);
 			tabelaSensores.getTableHeader().setReorderingAllowed(false);
 			tabelaSensores.setModel(tableModel2);
@@ -221,14 +234,17 @@ public class ServidorTela extends JFrame implements IServidorTela {
 		}
 	}
 
+	/**
+	 * metodo chamado pelo servidor quando uma alteração é feita nas listas de
+	 * informações
+	 */
 	@Override
 	public void atualizaAtuadores() {
 		try {
 			this.atuadores = this.iot.getAtuadores();
 
 			AnnotationResolver resolver = new AnnotationResolver(Atuador.class);
-			ObjectTableModel<Atuador> tableModel = new ObjectTableModel<Atuador>(resolver,
-					"nome,tipo,localizacao,valorParaAtuar") {
+			ObjectTableModel<Atuador> tableModel = new ObjectTableModel<Atuador>(resolver, "nome,tipo,localizacao,valorParaAtuar") {
 				@Override
 				public void setValueAt(Object value, int row, int col) {
 					super.setValueAt(value, row, col);

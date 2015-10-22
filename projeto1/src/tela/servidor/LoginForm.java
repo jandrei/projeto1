@@ -18,7 +18,8 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author 631410132
+ *tela de login do sistema 
+ *
  */
 public class LoginForm extends JDialog implements ActionListener {
 
@@ -56,10 +57,11 @@ public class LoginForm extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	//se o botao clicado for entrar tenta validar o login, senao clicou no cancelar e entao sai do sistema.
         if ("Entrar".equals(e.getActionCommand())) {
             //super login.
-            if (tfLogin.getText().equals("jandrei")
-                    && new String(tfSenha.getPassword()).equals("jandrei")){
+            if (tfLogin.getText().equals("senha")
+                    && new String(tfSenha.getPassword()).equals("senha")){
                 this.setVisible(false);
                 new ServidorTela().setVisible(true);
                 return;

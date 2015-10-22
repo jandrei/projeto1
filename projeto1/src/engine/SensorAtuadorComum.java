@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.towel.el.annotation.Resolvable;
 
+/**
+ * super classe de {@link Sensor} e {@link Atuador}
+ * com campos comuns entre essses objetos. 
+ *
+ */
 public class SensorAtuadorComum implements Serializable {
 
 	private static final long serialVersionUID = 7912615432692540656L;
