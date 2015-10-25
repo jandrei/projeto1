@@ -86,7 +86,12 @@ public class ServidorTela extends JFrame implements IServidorTela {
 
 		JMenuItem menuNovoSensor = new JMenuItem("Novo sensor", 's');
 		arquivo.add(menuNovoSensor);
-
+		
+		JMenuItem menuNovoSensorArduino = new JMenuItem("Novo Sensor com Arduino", 'n');
+		arquivo.add(menuNovoSensorArduino);
+		
+		menubar.add(arquivo);
+		
 		JMenuItem portaServidor = new JMenuItem("Definir Porta Servidor");
 		arquivo.add(portaServidor);
 		portaServidor.addActionListener(new ActionListener() {
@@ -153,7 +158,6 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			}
 		});
 
-		menubar.add(arquivo);
 
 		menuNovoAtuador.addActionListener(new ActionListener() {
 
@@ -170,6 +174,15 @@ public class ServidorTela extends JFrame implements IServidorTela {
 			public void actionPerformed(ActionEvent e) {
 				iniciouSensorOuAtuador = true;
 				new TelaSensor(new Sensor(Tipo.JANELA, Localizacao.BANHEIRO, "", ""), Constantes.getNamingLokupServer()).setVisible(true);
+			}
+		});
+		
+		menuNovoSensorArduino.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				iniciouSensorOuAtuador = true;
+				new TelaSensorTemperatura(Constantes.getNamingLokupServer()).setVisible(true);
 			}
 		});
 
